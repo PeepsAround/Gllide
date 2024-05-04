@@ -1,7 +1,6 @@
-import { Text, View } from '@/components/Themed';
 import React, { useEffect, useState } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, View } from 'react-native';
 import { SignInButton } from '@/components/SignInButton';
 import { SignOutButton } from '@/components/SignOutButton';
 import { axiosInstance, deleteValueForKey, getValueForKey, saveValueForKey } from '@/utils/helper';
@@ -63,11 +62,11 @@ export default function Login() {
 
 	return (
 		<View>
-		{accessToken?.accessToken == null ? (
-			<SignInButton {...signInButtonProp} />
-		) : (
-			<SignOutButton {...signOutButtonProp} />
-		)}
-	</View>
+			{accessToken?.accessToken == null ? (
+				<SignInButton {...signInButtonProp} />
+			) : (
+				<SignOutButton {...signOutButtonProp} />
+			)}
+		</View>
 	)
 }
