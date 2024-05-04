@@ -3,10 +3,8 @@ import {
 	GoogleSigninButton,
 	User
 } from '@react-native-google-signin/google-signin';
-import { Button, View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import axios from 'axios';
-import { testProtected } from '../utils/helper';
-
 
 interface SignInButtonProp {
 	setUserInfo: Function,
@@ -53,12 +51,21 @@ export function SignInButton(signInButtonProp: SignInButtonProp) {
 	};
 
 	return (
-		<View>
+		<View style={styles.container}>
 			<GoogleSigninButton
-			size={GoogleSigninButton.Size.Wide}
+			size={GoogleSigninButton.Size.Standard}
 			color={GoogleSigninButton.Color.Dark}
-			onPress={signIn} />
-			<Button title='Test Protected API' onPress={testProtected}></Button>
+			onPress={signIn} 
+			/>
 		</View>
 	)
 };
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		alignItems: 'center',
+		backgroundColor: 'white',
+	},
+});

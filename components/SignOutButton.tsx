@@ -1,6 +1,5 @@
-import {  Button, View } from 'react-native';
+import {  Button, View, StyleSheet } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { testProtected } from '@/utils/helper';
 
 interface SignOutButtonProp {
 	setUserInfo: Function,
@@ -22,10 +21,18 @@ export function SignOutButton(signOutButtonProp : SignOutButtonProp){
 	};
 
 	return(
-		<View>
+		<View style={styles.container}>
 			<Button title='Log Out' onPress={signOut}></Button>
 			<View style={{ marginBottom: 10 }} />
-			<Button title='Test Protected API' onPress={testProtected}></Button>
 		</View>
 	)
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		alignItems: 'center',
+		backgroundColor: 'white',
+	},
+});

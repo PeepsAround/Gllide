@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { useColorScheme, View } from 'react-native';
+import { useColorScheme, View, StyleSheet, Text } from 'react-native';
 import { SignInButton } from '@/components/SignInButton';
 import { SignOutButton } from '@/components/SignOutButton';
 import { axiosInstance, deleteValueForKey, getValueForKey, saveValueForKey } from '@/utils/helper';
@@ -61,12 +61,21 @@ export default function Login() {
 	}
 
 	return (
-		<View>
+		<View style={styles.container}>
 			{accessToken?.accessToken == null ? (
-				<SignInButton {...signInButtonProp} />
+				<SignInButton {...signInButtonProp}/>
 			) : (
 				<SignOutButton {...signOutButtonProp} />
 			)}
 		</View>
 	)
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: 'white',
+	},
+});
