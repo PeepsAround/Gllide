@@ -14,14 +14,16 @@ export default function Login() {
 
 	return (
 		<View style={styles.container}>
-			<GoogleSigninButton
-				size={GoogleSigninButton.Size.Standard}
-				color={GoogleSigninButton.Color.Dark}
-				onPress={async () => {
-					await signIn();
-					router.replace('/');
-				}} 
-			/>
+			<View style={styles.innerContainer}>
+				<GoogleSigninButton
+					size={GoogleSigninButton.Size.Standard}
+					color={GoogleSigninButton.Color.Dark}
+					onPress={async () => {
+						await signIn();
+						router.replace('/');
+					}}
+				/>
+			</View>
 		</View>
 	)
 }
@@ -33,4 +35,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: 'white',
 	},
+	innerContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		alignItems: 'center',
+	}
 });
