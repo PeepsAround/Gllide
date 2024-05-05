@@ -1,4 +1,4 @@
-import { Redirect, Stack } from 'expo-router';
+import { Redirect, Slot, Stack, Tabs } from 'expo-router';
 import { Text } from 'react-native';
 import { useSession } from '@/contexts/authContext'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -46,5 +46,7 @@ export default function AppLayout() {
 	}
 
 	// This layout can be deferred because it's not the root layout.
-	return <Stack />;
+	return (
+		<Stack screenOptions={{ headerShown: false}}/>
+	)
 }
