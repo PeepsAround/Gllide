@@ -5,6 +5,7 @@ import {
 	GoogleSignin
 } from '@react-native-google-signin/google-signin';
 import axios from 'axios';
+import { setAuthHeader } from '@/utils/helper';
 
 const AuthContext = createContext<{
 	signIn: () => void;
@@ -61,9 +62,11 @@ export function SessionProvider(props: React.PropsWithChildren) {
 				signIn: async () => {
 					const token = await signIn();
 					setSession(token);
+					setAuthHeader(token);
 				},
 				signOut: async() => {
 					setSession(null);
+					setAuthHeader(null);
 					await GoogleSignin.signOut();
 				},
 				session,

@@ -9,6 +9,15 @@ export const axiosInstance = axios.create({
 	},
 });
 
+export const setAuthHeader = (token : string | null) => {
+	if(token){
+		axiosInstance.defaults.headers.common['Authorization'] = "Bearer " + token;
+		return;
+	}
+
+	axiosInstance.defaults.headers.common['Authorization'] = null;
+}
+
 export const testProtected = async () => {
 	try {
 		const response = await axiosInstance.post("/feed/protected");
