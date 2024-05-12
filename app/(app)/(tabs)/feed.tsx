@@ -1,11 +1,11 @@
-import { useSession } from "@/contexts/authContext";
 import { Text, View } from "react-native"
-import { useState, useEffect } from 'react'
-import * as Location from 'expo-location';
+import { useEffect, useState } from 'react'
+
 import { axiosInstance } from "@/utils/helper";
+import { useLocation } from "@/contexts/locationContext";
 
 export default function Feed() {
-	const [location, setLocation] = useState<Location.LocationObject>();
+	const { location, refreshLocation } = useLocation();
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [posts, setPosts] = useState<string | null>(null);
 
@@ -16,21 +16,9 @@ export default function Feed() {
 
 	useEffect(() => {
 		(async () => {
-
-			try{
-				let { status } = await Location.requestForegroundPermissionsAsync();
-				if (status !== 'granted') {
-					setErrorMsg('Permission to access location was denied');
-					return;
-				}
-	
-				let location = await Location.getCurrentPositionAsync({});
-				setLocation(location);
-				await getFeed();
-			}
-			catch (error){
-				console.log(error);
-			}
+			console.log(`From Longitue : ${location?.coords.longitude} and Latitued : ${location?.coords.latitude}`);
+			await refreshLocation();
+			console.log(`From Longitue : ${location?.coords.longitude} and Latitued : ${location?.coords.latitude}`);
 		})();
 	}, [errorMsg]);
 

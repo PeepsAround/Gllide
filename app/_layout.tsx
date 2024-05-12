@@ -1,5 +1,6 @@
-import { Slot } from 'expo-router';
+import { LocationProvider } from '@/contexts/locationContext';
 import { SessionProvider } from '@/contexts/authContext';
+import { Slot } from 'expo-router';
 
 export default function RootLayout() {
 
@@ -9,7 +10,9 @@ export default function RootLayout() {
 function RootLayoutNav() {
 	return (
 		<SessionProvider>
-			<Slot/>
+			<LocationProvider>
+				<Slot/>
+			</LocationProvider>
 		</SessionProvider>
 	);
 }

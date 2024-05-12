@@ -1,11 +1,12 @@
-import React from 'react';
 import { createContext, useContext } from 'react';
-import { useStorageState } from '@/hooks/useStorageState';
+
 import {
 	GoogleSignin
 } from '@react-native-google-signin/google-signin';
+import React from 'react';
 import axios from 'axios';
 import { setAuthHeader } from '@/utils/helper';
+import { useStorageState } from '@/hooks/useStorageState';
 
 const AuthContext = createContext<{
 	signIn: () => void;
@@ -48,10 +49,10 @@ const signIn = async () => {
 		}
 	} catch (error) {
 		console.log("Error :", error);
+		alert(`Error : ${error}`);
 	}
 	return null;
 };
-
 
 export function SessionProvider(props: React.PropsWithChildren) {
 	const [[isLoading, session], setSession] = useStorageState('session');
