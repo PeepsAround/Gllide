@@ -1,18 +1,12 @@
 import { Text, View } from "react-native"
 import { useEffect, useState } from 'react'
 
-import { axiosInstance } from "@/utils/helper";
 import { useLocation } from "@/contexts/locationContext";
 
 export default function Feed() {
 	const { location, refreshLocation } = useLocation();
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [posts, setPosts] = useState<string | null>(null);
-
-	const getFeed = async() => {
-		var response = await axiosInstance.post('/feed/getFeed');
-		setPosts(response.data.post);
-	}
 
 	useEffect(() => {
 		(async () => {
