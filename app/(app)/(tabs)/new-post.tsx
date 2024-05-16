@@ -82,7 +82,7 @@ export default function NewPost() {
 
 			const response = await axiosPost("/post/add", formData, { "headers": {"Content-Type": "multipart/form-data" }});
 
-			if(response.status === HttpStatusCode.Ok){
+			if(response?.status === HttpStatusCode.Ok){
 				setImage(null);
 				setText("");
 				alert("Success");
