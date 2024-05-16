@@ -78,7 +78,9 @@ export default function NewPost() {
 
 			formData.append('text', text);
 			formData.append('longitude', location?.coords.longitude.toString());
+			formData.append('longitude', location?.coords.longitude.toString());
 			formData.append('latitude', location?.coords.latitude.toString());
+			formData.append('radius', "3");
 
 			const response = await axiosPost("/post/add", formData, { "headers": {"Content-Type": "multipart/form-data" }});
 

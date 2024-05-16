@@ -1,9 +1,12 @@
-import { Text, View } from 'react-native';
-import { useSession } from '@/contexts/authContext'
 import { Redirect } from 'expo-router';
+import { setAxiosAuthHeader } from '@/helper/axiosHelper';
+import { useSession } from '@/contexts/authContext'
 
 export default function Index() {
-	const { signOut } = useSession();
+	const { signOut, session } = useSession();
+
+	// Set the token in axiosInstance, since it won't have it after app restart
+	setAxiosAuthHeader(session);
 	return (
 		// <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 		// 	<Text
