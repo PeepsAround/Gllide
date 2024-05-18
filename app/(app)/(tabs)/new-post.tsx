@@ -78,7 +78,6 @@ export default function NewPost() {
 
 			formData.append('text', text);
 			formData.append('longitude', location?.coords.longitude.toString());
-			formData.append('longitude', location?.coords.longitude.toString());
 			formData.append('latitude', location?.coords.latitude.toString());
 			formData.append('radius', "3");
 
