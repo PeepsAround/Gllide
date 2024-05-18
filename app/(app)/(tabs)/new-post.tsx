@@ -23,7 +23,13 @@ export default function NewPost() {
 				return;
 			}
 	
-			let result = await ImagePicker.launchCameraAsync({});
+			let result = await ImagePicker.launchCameraAsync({
+				mediaTypes: ImagePicker.MediaTypeOptions.Images,
+				allowsEditing: true,
+				aspect: [1, 1],
+				quality: 1,
+				cameraType: ImagePicker.CameraType.back,
+			});
 	
 			console.log(result);
 	
