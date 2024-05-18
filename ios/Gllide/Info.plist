@@ -80,5 +80,11 @@
     <string>Automatic</string>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
+	<key>NSCameraUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>"Allow $(PRODUCT_NAME) to access your photos"</string>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>"Allow $(PRODUCT_NAME) to access your microphone"</string>
   </dict>
 </plist>
