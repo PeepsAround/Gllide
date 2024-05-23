@@ -1,8 +1,9 @@
-import React from 'react';
 import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
-import { useSession } from '@/contexts/authContext';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+
+import React from 'react';
 import { router } from 'expo-router';
+import { useSession } from '@/contexts/authContext';
 
 GoogleSignin.configure({
 	webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
@@ -10,7 +11,7 @@ GoogleSignin.configure({
 });
 
 export default function Login() {
-	const { signIn } = useSession();
+	const { signIn, signOut } = useSession();
 
 	return (
 		<View style={styles.container}>
@@ -19,6 +20,7 @@ export default function Login() {
 					size={GoogleSigninButton.Size.Standard}
 					color={GoogleSigninButton.Color.Dark}
 					onPress={async () => {
+						await signOut();
 						await signIn();
 						router.replace('/');
 					}}

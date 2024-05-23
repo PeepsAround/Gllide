@@ -3,10 +3,10 @@ import * as Location from 'expo-location';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const LocationContext = createContext<{
-	refreshLocation: () => void,
+	refreshLocation: () => Promise<void>,
 	location: Location.LocationObject
 }>({
-	refreshLocation: () => null,
+	refreshLocation: null,
 	location: null
 });
 
@@ -17,7 +17,7 @@ export function useLocation() {
 			throw new Error('useSession must be wrapped in a <SessionProvider />');
 		}
 	}
-
+	
 	return value;
 }
 
@@ -41,12 +41,6 @@ const refreshLocation = async () => {
 
 export function LocationProvider(props: React.PropsWithChildren){
 	const [location, setLocation] = useState<Location.LocationObject>();
-
-	useEffect(() => {
-		(async () => {
-			setLocation(await refreshLocation());
-		})();
-	}, []);
 
 	return (
 		<LocationContext.Provider
