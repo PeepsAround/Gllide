@@ -39,9 +39,6 @@ export default function Feed() {
 	return (
 		<View>
 			<Text>
-				Welcome to Feed
-			</Text>
-			<Text>
 				From Longitue : {location?.coords.longitude} and Latitued : {location?.coords.latitude}
 			</Text>
 			<PostList posts={posts}></PostList>
