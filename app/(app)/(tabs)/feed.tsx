@@ -7,9 +7,11 @@ import PostList from "@/components/postList";
 import { axiosInstance } from "@/helper/axiosHelper";
 import { logError } from "@/helper/errorLogger";
 import { useLocation } from "@/contexts/locationContext";
+import { useSession } from "@/contexts/authContext";
 
 export default function Feed() {
 	const { location } = useLocation();
+	const { userId } = useSession();
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [posts, setPosts] = useState<FeedPostDTO[] | null>(null);
 
@@ -18,7 +20,6 @@ export default function Feed() {
 			var response = await axiosInstance.get(`/feed?longitude=${location?.coords.longitude}&latitude=${location?.coords.latitude}&radius=3`);
 			if(response.status == HttpStatusCode.Ok){
 				const posts:FeedPostDTO[] = response.data;
-				console.log(posts);
 				setPosts(posts);
 			}else{
 				alert("Failed!");
@@ -29,19 +30,34 @@ export default function Feed() {
 		}
 	}
 
+	const deleteMyPost = async (postId: string) => {
+		try {
+			const response = await axiosInstance.delete(`/post?postId=${postId}`);
+			if (response.status === HttpStatusCode.Ok) { // Or HttpStatusCode.Ok if it's defined
+				// Filter out the deleted post
+				const updatedPosts = posts?.filter(post => post.postId !== postId);
+				setPosts(updatedPosts);
+			} else {
+				alert("Failed to delete the post!");
+			}
+		} catch (error) {
+			console.error("Error deleting post:", error);
+			alert("An error occurred while trying to delete the post.");
+		}
+	};
+
 	useEffect(() => {
 		(async () => {
 			getFeed();
 		})();
 	}, [errorMsg]);
 
-
 	return (
 		<View>
 			<Text>
 				From Longitue : {location?.coords.longitude} and Latitued : {location?.coords.latitude}
 			</Text>
-			<PostList posts={posts}></PostList>
+			<PostList posts={posts} userId={userId} deleteMyPost={deleteMyPost}></PostList>
 		</View>
 	)
 }

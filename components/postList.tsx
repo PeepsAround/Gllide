@@ -1,12 +1,14 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { FeedPostDTO } from '@/models/feedPostDTO';
 
 interface PostListProps {
 	posts: FeedPostDTO[];
+	userId: string;
+	deleteMyPost: Function;
 }
 
-const PostList: React.FC<PostListProps> = ({ posts }) => {
+const PostList: React.FC<PostListProps> = ({ posts, userId, deleteMyPost }) => {
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			{posts?.map(post => (
@@ -19,10 +21,16 @@ const PostList: React.FC<PostListProps> = ({ posts }) => {
 					<View style={styles.metaContainer}>
 						<Text style={styles.meta}>❤️ {post.likes}</Text>
 						<Text style={styles.meta}>💬 {post.comments}</Text>
+						{userId === post.userId && (
+							<TouchableOpacity onPress={() => { deleteMyPost(post.postId) }} style={styles.deleteButton}>
+								<Text style={styles.deleteButtonText}>Delete</Text>
+							</TouchableOpacity>
+						)}
 					</View>
 				</View>
 			))}
 		</ScrollView>
+
 	);
 };
 
@@ -65,6 +73,15 @@ const styles = StyleSheet.create({
 	meta: {
 		fontSize: 12,
 		color: '#8e8e8e',
+	},
+	deleteButton: {
+		backgroundColor: 'red',
+		padding: 5,
+		borderRadius: 3,
+	},
+	deleteButtonText: {
+		color: 'white',
+		fontWeight: 'bold',
 	},
 });
 
