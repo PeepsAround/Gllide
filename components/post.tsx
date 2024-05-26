@@ -25,10 +25,10 @@ const Post: React.FC<PostListProps> = ({ post, userId, deleteMyPost, likePost })
 			{post.imageUrl && <Image source={{ uri: post.imageUrl }} style={styles.image} />}
 			<View style={styles.metaContainer}>
 				<View style={styles.likeContainer}>
-					{!liked && <TouchableOpacity onPress={() => { setLikes(likes+1);setLiked(true); likePost(post.postId, true) }}>
+					{!liked && <TouchableOpacity onPress={() => { setLikes(prevLikes => prevLikes + 1);setLiked(true); likePost(post.postId, true) }}>
 						<FontAwesome6 name="heart" size={24} color="black" />
 					</TouchableOpacity>}
-					{liked && <TouchableOpacity onPress={() => { setLikes(likes-1);setLiked(false); likePost(post.postId, false) }}>
+					{liked && <TouchableOpacity onPress={() => { setLikes(prevLikes => prevLikes - 1);setLiked(false); likePost(post.postId, false) }}>
 						<FontAwesome name="heart" size={24} color="black" />
 					</TouchableOpacity>}
 					<Text style={styles.meta}>{likes}</Text>
