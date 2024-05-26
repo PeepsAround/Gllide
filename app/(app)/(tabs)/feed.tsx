@@ -41,10 +41,24 @@ export default function Feed() {
 				alert("Failed to delete the post!");
 			}
 		} catch (error) {
-			console.error("Error deleting post:", error);
+			logError(error);
 			alert("An error occurred while trying to delete the post.");
 		}
 	};
+
+	const likePost = async (postId: string, action: boolean) => {
+		try {
+			const response = await axiosInstance.get(`/post/like?postId=${postId}&action=${action}`);
+			if (response.status === HttpStatusCode.Ok) { // Or HttpStatusCode.Ok if it's defined
+
+			} else {
+				alert("Failed to delete the post!");
+			}
+		} catch (error) {
+			logError(error);
+			alert("An error occurred while trying to like the post!");
+		}
+	}
 
 	useEffect(() => {
 		(async () => {
@@ -57,7 +71,7 @@ export default function Feed() {
 			<Text>
 				From Longitue : {location?.coords.longitude} and Latitued : {location?.coords.latitude}
 			</Text>
-			<PostList posts={posts} userId={userId} deleteMyPost={deleteMyPost}></PostList>
+			<PostList posts={posts} userId={userId} deleteMyPost={deleteMyPost} likePost={likePost}></PostList>
 		</View>
 	)
 }
