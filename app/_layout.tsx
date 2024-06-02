@@ -10,6 +10,7 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+	console.log("🚀 ~ RootLayoutNav ~ RootLayoutNav:", RootLayoutNav)
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
 			<BottomSheetModalProvider>

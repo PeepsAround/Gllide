@@ -1,10 +1,11 @@
 import * as SplashScreen from 'expo-splash-screen';
 
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Redirect, Slot, Stack, Tabs } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import { useLocation } from '@/contexts/locationContext';
 import { useSession } from '@/contexts/authContext'
@@ -13,10 +14,11 @@ import { useSession } from '@/contexts/authContext'
 SplashScreen.preventAutoHideAsync();
 
 export default function AppLayout() {
+	console.log("🚀 ~ AppLayout ~ AppLayout:", AppLayout)
 	const { session, isLoading } = useSession();
 	const { location, refreshLocation } = useLocation();
 
-	const [loaded, error] = useFonts({
+	const [fontLoaded, error] = useFonts({
 		SpaceMono: require('@/assets/fonts/SpaceMono-Regular.ttf'),
 		...FontAwesome.font,
 	});
@@ -31,17 +33,14 @@ export default function AppLayout() {
 	}, []);
 
 	useEffect(() => {
-		if (loaded) {
+		if (fontLoaded) {
 			SplashScreen.hideAsync();
 		}
-	}, [loaded]);
-
-	if (!loaded) {
-		return null;
-	}
+	}, [fontLoaded]);
 
 	// You can keep the splash screen open, or render a loading screen like we do here.
-	if (isLoading || location == undefined) {
+	if (!fontLoaded || isLoading || location == undefined) {
+		console.log("🚀 ~ AppLayout ~ Loading...:")
 		return <View style={styles.loadingContainer}>
 			<Text>Loading...</Text>
 		</View>;
@@ -56,8 +55,13 @@ export default function AppLayout() {
 	}
 
 	// This layout can be deferred because it's not the root layout.
+	console.log("🚀 ~ AppLayout ~ Stack: Stack");
+
 	return (
-		<Stack screenOptions={{ headerShown: false}}/>
+		<>
+			<Stack screenOptions={{ headerShown: false }}/>
+
+		</>
 	)
 }
 

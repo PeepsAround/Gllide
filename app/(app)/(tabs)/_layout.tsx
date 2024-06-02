@@ -1,11 +1,12 @@
 import { Tabs } from 'expo-router';
 
 export default function TabsLayout() {
+
 	return (
 		<Tabs>
 			<Tabs.Screen name="feed" options={{
 				title: "Feed",
-				headerTitle: "Feed"
+				headerTitle: "Feed",
 			}}/>
 			<Tabs.Screen name="around" options={{
 				title: "Around",

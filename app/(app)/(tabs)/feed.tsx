@@ -1,9 +1,11 @@
+import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { Text, View } from "react-native"
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
+import CustomBottomSheetModal from "@/components/CustomBottomSheetModal";
 import { FeedPostDTO } from "@/models/feedPostDTO";
 import { HttpStatusCode } from "axios";
-import PostList from "@/components/postList";
+import PostList from "@/components/PostList";
 import { axiosInstance } from "@/helper/axiosHelper";
 import { logError } from "@/helper/errorLogger";
 import { useLocation } from "@/contexts/locationContext";
@@ -15,6 +17,12 @@ export default function Feed() {
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [posts, setPosts] = useState<FeedPostDTO[] | null>(null);
 
+	const bottomSheetRef = useRef<BottomSheetModal>(null);
+	const { dismiss } = useBottomSheetModal();
+
+	const handlePresentModalPress = () => bottomSheetRef.current?.present();
+
+	
 	const getFeed = async () => {
 		try{
 			var response = await axiosInstance.get(`/feed?longitude=${location?.coords.longitude}&latitude=${location?.coords.latitude}&radius=3`);
@@ -48,6 +56,7 @@ export default function Feed() {
 
 	const likePost = async (postId: string, action: boolean) => {
 		try {
+			handlePresentModalPress();
 			const response = await axiosInstance.get(`/post/like?postId=${postId}&action=${action}`);
 			if (response.status === HttpStatusCode.Ok) { // Or HttpStatusCode.Ok if it's defined
 
@@ -72,6 +81,7 @@ export default function Feed() {
 				From Longitue : {location?.coords.longitude} and Latitued : {location?.coords.latitude}
 			</Text>
 			<PostList posts={posts} userId={userId} deleteMyPost={deleteMyPost} likePost={likePost}></PostList>
+			<CustomBottomSheetModal ref={bottomSheetRef} />
 		</View>
 	)
 }

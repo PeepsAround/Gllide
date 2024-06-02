@@ -1,7 +1,7 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { FeedPostDTO } from '@/models/feedPostDTO';
-import Post from './post';
+import Post from './Post';
 
 interface PostListProps {
 	posts: FeedPostDTO[];
