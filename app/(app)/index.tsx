@@ -1,22 +1,24 @@
+import { BottomSheetModal, useBottomSheetModal } from '@gorhom/bottom-sheet';
+import { Button, StyleSheet, View } from 'react-native';
+
+import CustomBottomSheetModal from '@/components/CustomBottomSheetModal';
 import { Redirect } from 'expo-router';
 import { setAxiosAuthHeader } from '@/helper/axiosHelper';
+import { useRef } from 'react';
 import { useSession } from '@/contexts/authContext'
 
 export default function Index() {
 	const { signOut, session } = useSession();
 
+	const bottomSheetRef = useRef<BottomSheetModal>(null);
+	const { dismiss } = useBottomSheetModal();
+
+	const handlePresentModalPress = () => bottomSheetRef.current?.present();
+
 	// Set the token in axiosInstance, since it won't have it after app restart
 	setAxiosAuthHeader(session);
+	
 	return (
-		// <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-		// 	<Text
-		// 		onPress={() => {
-		// 			// The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
-		// 			signOut();
-		// 		}}>
-		// 		Sign Out
-		// 	</Text>
-		// </View>
 		<Redirect href="/(app)/(tabs)/feed" />
 	);
 }
