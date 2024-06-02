@@ -9,7 +9,8 @@ export default function TabsLayout() {
 			}}/>
 			<Tabs.Screen name="around" options={{
 				title: "Around",
-				headerTitle: "Around"
+				headerTitle: "Around",
+				// href: null
 			}}/>
 			<Tabs.Screen name="new-post" options={{
 				title: "New Post",
