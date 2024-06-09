@@ -14,7 +14,6 @@ import { useSession } from '@/contexts/authContext'
 SplashScreen.preventAutoHideAsync();
 
 export default function AppLayout() {
-	console.log("🚀 ~ AppLayout ~ AppLayout:", AppLayout)
 	const { session, isLoading } = useSession();
 	const { location, refreshLocation } = useLocation();
 
@@ -40,7 +39,6 @@ export default function AppLayout() {
 
 	// You can keep the splash screen open, or render a loading screen like we do here.
 	if (!fontLoaded || isLoading || location == undefined) {
-		console.log("🚀 ~ AppLayout ~ Loading...:")
 		return <View style={styles.loadingContainer}>
 			<Text>Loading...</Text>
 		</View>;
@@ -55,8 +53,6 @@ export default function AppLayout() {
 	}
 
 	// This layout can be deferred because it's not the root layout.
-	console.log("🚀 ~ AppLayout ~ Stack: Stack");
-
 	return (
 		<>
 			<Stack screenOptions={{ headerShown: false }}/>

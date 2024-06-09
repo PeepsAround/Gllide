@@ -8,13 +8,14 @@ interface PostListProps {
 	userId: string;
 	deleteMyPost: Function;
 	likePost: Function;
+	openCommentSection: Function;
 }
 
-const PostList: React.FC<PostListProps> = ({ posts, userId, deleteMyPost, likePost }) => {
+const PostList: React.FC<PostListProps> = ({ posts, userId, deleteMyPost, likePost, openCommentSection }) => {
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			{posts?.map(post => (
-				<Post key={post.postId} post={post} userId={userId} deleteMyPost={deleteMyPost} likePost={likePost}></Post>
+				<Post key={post.postId} post={post} userId={userId} deleteMyPost={deleteMyPost} likePost={likePost} openCommentSection={openCommentSection}></Post>
 			))}
 		</ScrollView>
 

@@ -2,6 +2,7 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { Text, View } from "react-native"
 import { useEffect, useRef, useState } from 'react'
 
+import CommentSection from "@/components/commentSection/CommentSection";
 import CustomBottomSheetModal from "@/components/CustomBottomSheetModal";
 import { FeedPostDTO } from "@/models/feedPostDTO";
 import { HttpStatusCode } from "axios";
@@ -16,12 +17,18 @@ export default function Feed() {
 	const { userId } = useSession();
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [posts, setPosts] = useState<FeedPostDTO[] | null>(null);
+	
+	// States for comment section
+	const [currPostComments, setCurrPostComments] = useState<string[] | null>(null);
 
 	const bottomSheetRef = useRef<BottomSheetModal>(null);
 	const { dismiss } = useBottomSheetModal();
 
 	const handlePresentModalPress = () => bottomSheetRef.current?.present();
 
+	const openCommentSection = () => {
+		handlePresentModalPress();
+	}
 	
 	const getFeed = async () => {
 		try{
@@ -56,7 +63,6 @@ export default function Feed() {
 
 	const likePost = async (postId: string, action: boolean) => {
 		try {
-			handlePresentModalPress();
 			const response = await axiosInstance.get(`/post/like?postId=${postId}&action=${action}`);
 			if (response.status === HttpStatusCode.Ok) { // Or HttpStatusCode.Ok if it's defined
 
@@ -75,13 +81,27 @@ export default function Feed() {
 		})();
 	}, [errorMsg]);
 
+	const postListPros = {
+		posts,
+		userId,
+		deleteMyPost,
+		likePost,
+		openCommentSection,
+	}
+
+	const commentSectionProps = {
+
+	}
+
 	return (
 		<View>
 			<Text>
 				From Longitue : {location?.coords.longitude} and Latitued : {location?.coords.latitude}
 			</Text>
-			<PostList posts={posts} userId={userId} deleteMyPost={deleteMyPost} likePost={likePost}></PostList>
-			<CustomBottomSheetModal ref={bottomSheetRef} />
+			<PostList {...postListPros}></PostList>
+			<CustomBottomSheetModal ref={bottomSheetRef}>
+				<CommentSection></CommentSection>
+			</CustomBottomSheetModal>
 		</View>
 	)
 }

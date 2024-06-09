@@ -1,31 +1,39 @@
-import React, { forwardRef, useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import React, { ReactNode, forwardRef, useCallback, useMemo } from 'react';
 
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+interface CustomBottomSheetModalProps {
+	children: ReactNode;
+}
+
 export type Ref = BottomSheetModal;
 
-const CustomBottomSheetModal = forwardRef<Ref>((props, ref) => {
-	const snapPoints = useMemo(() => ['50%', '75%'], []);
+const CustomBottomSheetModal = forwardRef<Ref, CustomBottomSheetModalProps>((props, ref) => {
+	const snapPoints = useMemo(() => ["85%"], []);
+
+	const renderBackdrop = useCallback(
+		(props) => (
+			<BottomSheetBackdrop
+				{...props}
+				appearsOnIndex={0}
+			/>
+		),
+		[]
+	);
 
 	return (
-		<BottomSheetModal ref={ref} index={0} snapPoints={snapPoints}>
-			<View style={styles.contentContainer}>
-				<Text style={styles.containerHeadline}>Bottom Modal 😎</Text>
-			</View>
+		<BottomSheetModal 
+		ref={ref} 
+		index={0} 
+		snapPoints={snapPoints} 
+		backdropComponent={renderBackdrop} 
+		android_keyboardInputMode="adjustResize" 
+		keyboardBlurBehavior="restore"
+		{...(Platform.OS === 'ios' && { keyboardBehavior: 'extend' })}
+		>
+			{props.children}
 		</BottomSheetModal>
 	);
-});
-
-const styles = StyleSheet.create({
-	contentContainer: {
-		flex: 1,
-		alignItems: 'center'
-	},
-	containerHeadline: {
-		fontSize: 24,
-		fontWeight: '600',
-		padding: 20
-	}
 });
 
 export default CustomBottomSheetModal;

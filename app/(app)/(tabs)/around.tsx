@@ -1,32 +1,50 @@
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { StyleSheet, Text, View } from "react-native"
+import BottomSheet, { BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
+import { Button, Platform, StyleSheet, Text, View } from "react-native"
+import { useCallback, useMemo, useRef } from "react";
 
-import { useMemo } from "react";
+import { TextInput } from 'react-native-gesture-handler';
 
-export default function Around(){
-	const snapPoints = useMemo(() => ['25%', '50%', '70%'], []);
+export default function Around() {
+	// variables
+	const snapPoints = useMemo(() => ["85%"], []);
 
+	// renders
 	return (
-		<View style={styles.container}>
-			<BottomSheet index={1} snapPoints={snapPoints}>
-				<View style={styles.contentContainer}>
-					<Text>
-						This is Awesome!
-					</Text>
+		<BottomSheet
+			index={0}
+			snapPoints={snapPoints}
+			android_keyboardInputMode="adjustResize"
+			keyboardBlurBehavior="restore"
+			{...(Platform.OS === 'ios' && { keyboardBehavior: 'extend' })}
+		>
+			<BottomSheetView style={styles.view}>
+				<View style={styles.flexContainer} />
+				<View style={styles.inputContainer}>
+					<BottomSheetTextInput style={styles.input} />
 				</View>
-			</BottomSheet>
-		</View>
-	)
-}
+			</BottomSheetView>
+		</BottomSheet>
+	);
+};
 
 const styles = StyleSheet.create({
-	container: {
-	  flex: 1,
-	  padding: 24,
-	  backgroundColor: 'grey',
+	view: {
+		borderWidth: 1,
+		flex: 1,
 	},
-	contentContainer: {
-	  flex: 1,
-	  alignItems: 'center',
+	flexContainer: {
+		flex: 1,
 	},
-  });
+	inputContainer: {
+		marginHorizontal: 16,
+		marginBottom: 10,
+	},
+	input: {
+		borderRadius: 10,
+		fontSize: 16,
+		lineHeight: 20,
+		padding: 8,
+		backgroundColor: 'rgba(151, 151, 151, 0.25)',
+		color: '#fff',
+	}
+});

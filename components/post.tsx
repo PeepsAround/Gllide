@@ -10,9 +10,10 @@ interface PostListProps {
 	userId: string;
 	deleteMyPost: Function;
 	likePost: Function;
+	openCommentSection: Function;
 }
 
-const Post: React.FC<PostListProps> = ({ post, userId, deleteMyPost, likePost }) => {
+const Post: React.FC<PostListProps> = ({ post, userId, deleteMyPost, likePost, openCommentSection }) => {
 	const [liked, setLiked] = useState(post.liked);
 	const [likes, setLikes] = useState(post.likes);
 	
@@ -33,7 +34,11 @@ const Post: React.FC<PostListProps> = ({ post, userId, deleteMyPost, likePost })
 					</TouchableOpacity>}
 					<Text style={styles.meta}>{likes}</Text>
 				</View>
-				<Text style={styles.meta}>💬 {post.comments}</Text>
+				<View>
+					<TouchableOpacity onPress={() => { openCommentSection() }}>
+						<Text style={styles.meta}>💬 {post.comments}</Text>
+					</TouchableOpacity>
+				</View>
 				{userId === post.userId && (
 					<TouchableOpacity onPress={() => { deleteMyPost(post.postId) }} style={styles.deleteButton}>
 						<Text style={styles.deleteButtonText}>Delete</Text>
