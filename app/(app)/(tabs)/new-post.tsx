@@ -11,7 +11,7 @@ import { logError } from '@/helper/errorLogger';
 import { useLocation } from '@/contexts/locationContext';
 
 export default function NewPost() {
-	const [text, setText] = React.useState<string>();
+	const [text, setText] = useState<string>();
 	const { location } = useLocation();
 	const [image, setImage] = useState(null);
 	const [postAnonymously, setPostAnonymously] = useState(false);

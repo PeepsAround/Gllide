@@ -29,7 +29,6 @@ export default function Around() {
 
 const styles = StyleSheet.create({
 	view: {
-		borderWidth: 1,
 		flex: 1,
 	},
 	flexContainer: {

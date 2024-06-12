@@ -19,14 +19,16 @@ export default function Feed() {
 	const [posts, setPosts] = useState<FeedPostDTO[] | null>(null);
 	
 	// States for comment section
-	const [currPostComments, setCurrPostComments] = useState<string[] | null>(null);
+	const [currPostId, setCurrPostId] = useState<string | null>(null);
+	const [currPostComments, setCurrPostComments] = useState<string[] | null>([]);
 
 	const bottomSheetRef = useRef<BottomSheetModal>(null);
 	const { dismiss } = useBottomSheetModal();
 
 	const handlePresentModalPress = () => bottomSheetRef.current?.present();
 
-	const openCommentSection = () => {
+	const openCommentSection = (postId: string) => {
+		setCurrPostId(postId);
 		handlePresentModalPress();
 	}
 	
@@ -75,6 +77,20 @@ export default function Feed() {
 		}
 	}
 
+	const postComment = async(postId: string, commentText: string) => {
+		try {
+			const response = await axiosInstance.post("/comment", { postId, commentText });
+			if (response.status === HttpStatusCode.Created) { // Or HttpStatusCode.Ok if it's defined
+				setCurrPostComments([...currPostComments, commentText]);
+			} else {
+				alert("Failed to post the comment!");
+			}
+		} catch (error) {
+			logError(error);
+			alert("An error occurred while trying to post the comment.");
+		}
+	}
+
 	useEffect(() => {
 		(async () => {
 			getFeed();
@@ -90,7 +106,8 @@ export default function Feed() {
 	}
 
 	const commentSectionProps = {
-
+		currPostId: currPostId,
+		postComment: postComment
 	}
 
 	return (
@@ -100,7 +117,7 @@ export default function Feed() {
 			</Text>
 			<PostList {...postListPros}></PostList>
 			<CustomBottomSheetModal ref={bottomSheetRef}>
-				<CommentSection></CommentSection>
+				<CommentSection {...commentSectionProps} ></CommentSection>
 			</CustomBottomSheetModal>
 		</View>
 	)

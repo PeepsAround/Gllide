@@ -1,17 +1,24 @@
 import { BottomSheetTextInput, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Button, StyleSheet, Text, View } from "react-native";
 
+import { useState } from "react";
+
 interface CommentSectionProps {
+	currPostId: string,
+	postComment: Function
 }
 
-
-const CommentSection: React.FC<CommentSectionProps> = () => {
+const CommentSection: React.FC<CommentSectionProps> = ({currPostId, postComment}: CommentSectionProps) => {
+	const [commentText, setCommentText] = useState<string>();
+	
 	return (
 		<BottomSheetView style={styles.view}>
-			<View style={styles.flexContainer} />
+			<View style={styles.flexContainer}>
+				<Text>{currPostId}</Text>
+			</View>
 			<View style={styles.inputContainer}>
-				<BottomSheetTextInput style={styles.input} />
-				<Button title='pussy'/>
+				<BottomSheetTextInput value={commentText} onChangeText={commentText => setCommentText(commentText)} style={styles.input} />
+				<Button title='post' onPress={() => {postComment(currPostId, commentText); setCommentText("")}}/>
 			</View>
 		</BottomSheetView>
 	)
@@ -19,7 +26,6 @@ const CommentSection: React.FC<CommentSectionProps> = () => {
 
 const styles = StyleSheet.create({
 	view: {
-		borderWidth: 1,
 		flex: 1,
 	},
 	flexContainer: {
