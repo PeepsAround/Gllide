@@ -9,13 +9,14 @@ interface CustomBottomSheetModalProps {
 export type Ref = BottomSheetModal;
 
 const CustomBottomSheetModal = forwardRef<Ref, CustomBottomSheetModalProps>((props, ref) => {
-	const snapPoints = useMemo(() => ["85%"], []);
+	const snapPoints = useMemo(() => ["50%", "90%"], []);
 
 	const renderBackdrop = useCallback(
 		(props) => (
 			<BottomSheetBackdrop
 				{...props}
-				appearsOnIndex={0}
+				appearsOnIndex={1}
+				disappearsOnIndex={0}
 			/>
 		),
 		[]

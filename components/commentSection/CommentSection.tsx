@@ -1,26 +1,38 @@
-import { BottomSheetTextInput, BottomSheetView } from "@gorhom/bottom-sheet";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { BottomSheetFlatList, BottomSheetTextInput, BottomSheetView } from "@gorhom/bottom-sheet";
+import { Button, StyleSheet, View } from "react-native";
 
+import Comment from "./Comment";
+import { CommentDTO } from "../../models/commentDTO";
 import { useState } from "react";
 
 interface CommentSectionProps {
 	currPostId: string,
-	postComment: Function
+	postComment: Function,
+	currPostComments: CommentDTO[]
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({currPostId, postComment}: CommentSectionProps) => {
+const CommentSection: React.FC<CommentSectionProps> = ({currPostId, postComment, currPostComments}: CommentSectionProps) => {
 	const [commentText, setCommentText] = useState<string>();
 	
 	return (
-		<BottomSheetView style={styles.view}>
-			<View style={styles.flexContainer}>
-				<Text>{currPostId}</Text>
-			</View>
+		<>
+			<BottomSheetFlatList style={styles.flexContainer} 
+				data={currPostComments}
+				renderItem={({item}) =>	
+					<Comment
+					key={item.commentId}
+					userName={item.userName}
+					commentText={item.commentText}
+					createdAt={item.createdAt}
+					/>
+				}
+				keyExtractor={item => item.commentId}
+			/>
 			<View style={styles.inputContainer}>
 				<BottomSheetTextInput value={commentText} onChangeText={commentText => setCommentText(commentText)} style={styles.input} />
 				<Button title='post' onPress={() => {postComment(currPostId, commentText); setCommentText("")}}/>
 			</View>
-		</BottomSheetView>
+		</>
 	)
 }
 

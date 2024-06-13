@@ -35,7 +35,7 @@ const Post: React.FC<PostListProps> = ({ post, userId, deleteMyPost, likePost, o
 					<Text style={styles.meta}>{likes}</Text>
 				</View>
 				<View>
-					<TouchableOpacity onPress={() => { openCommentSection(post.postId) }}>
+					<TouchableOpacity onPress={async () => { await openCommentSection(post.postId) }}>
 						<Text style={styles.meta}>💬 {post.comments}</Text>
 					</TouchableOpacity>
 				</View>

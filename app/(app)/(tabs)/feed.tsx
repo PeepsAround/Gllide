@@ -2,6 +2,7 @@ import { BottomSheetModal, useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { Text, View } from "react-native"
 import { useEffect, useRef, useState } from 'react'
 
+import { CommentDTO } from "@/models/commentDTO";
 import CommentSection from "@/components/commentSection/CommentSection";
 import CustomBottomSheetModal from "@/components/CustomBottomSheetModal";
 import { FeedPostDTO } from "@/models/feedPostDTO";
@@ -20,23 +21,37 @@ export default function Feed() {
 	
 	// States for comment section
 	const [currPostId, setCurrPostId] = useState<string | null>(null);
-	const [currPostComments, setCurrPostComments] = useState<string[] | null>([]);
+	const [currPostComments, setCurrPostComments] = useState<CommentDTO[] | null>([]);
 
 	const bottomSheetRef = useRef<BottomSheetModal>(null);
 	const { dismiss } = useBottomSheetModal();
 
 	const handlePresentModalPress = () => bottomSheetRef.current?.present();
 
-	const openCommentSection = (postId: string) => {
-		setCurrPostId(postId);
-		handlePresentModalPress();
+	const openCommentSection = async (postId: string) => {
+		try{
+			setCurrPostComments([]);
+			setCurrPostId(postId);
+			handlePresentModalPress();
+
+			var response = await axiosInstance.get(`/comment?postId=${postId}`);
+			if(response.status == HttpStatusCode.Ok){
+				const comments: CommentDTO[] = response.data;
+				setCurrPostComments(comments);
+			}else{
+				alert("Failed!");
+			}
+		}
+		catch (error){
+			logError(error);
+		}
 	}
 	
 	const getFeed = async () => {
 		try{
 			var response = await axiosInstance.get(`/feed?longitude=${location?.coords.longitude}&latitude=${location?.coords.latitude}&radius=3`);
 			if(response.status == HttpStatusCode.Ok){
-				const posts:FeedPostDTO[] = response.data;
+				const posts: FeedPostDTO[] = response.data;
 				setPosts(posts);
 			}else{
 				alert("Failed!");
@@ -79,9 +94,18 @@ export default function Feed() {
 
 	const postComment = async(postId: string, commentText: string) => {
 		try {
+			var comment: CommentDTO = {
+				commentText
+			}
+			setCurrPostComments([...currPostComments, comment]);
+
 			const response = await axiosInstance.post("/comment", { postId, commentText });
+			
 			if (response.status === HttpStatusCode.Created) { // Or HttpStatusCode.Ok if it's defined
-				setCurrPostComments([...currPostComments, commentText]);
+				
+				// Add other comment details
+				comment = response.data;
+				setCurrPostComments([...currPostComments, comment]);
 			} else {
 				alert("Failed to post the comment!");
 			}
@@ -107,7 +131,8 @@ export default function Feed() {
 
 	const commentSectionProps = {
 		currPostId: currPostId,
-		postComment: postComment
+		postComment: postComment,
+		currPostComments: currPostComments
 	}
 
 	return (
