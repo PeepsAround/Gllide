@@ -94,17 +94,12 @@ export default function Feed() {
 
 	const postComment = async(postId: string, commentText: string) => {
 		try {
-			var comment: CommentDTO = {
-				commentText
-			}
-			setCurrPostComments([...currPostComments, comment]);
 
 			const response = await axiosInstance.post("/comment", { postId, commentText });
 			
 			if (response.status === HttpStatusCode.Created) { // Or HttpStatusCode.Ok if it's defined
-				
 				// Add other comment details
-				comment = response.data;
+				var comment:CommentDTO = response.data;
 				setCurrPostComments([...currPostComments, comment]);
 			} else {
 				alert("Failed to post the comment!");
