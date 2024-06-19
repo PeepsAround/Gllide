@@ -16,6 +16,8 @@ import { useSession } from "@/contexts/authContext";
 export default function Feed() {
 	const { location } = useLocation();
 	const { userId } = useSession();
+	const [pageNo, setPageNo] = useState(1);
+	const [pageSize, setPageSize] = useState(10);
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [posts, setPosts] = useState<FeedPostDTO[] | null>(null);
 	
@@ -49,7 +51,7 @@ export default function Feed() {
 	
 	const getFeed = async () => {
 		try{
-			var response = await axiosInstance.get(`/feed?longitude=${location?.coords.longitude}&latitude=${location?.coords.latitude}&radius=3`);
+			var response = await axiosInstance.get(`/feed?longitude=${location?.coords.longitude}&latitude=${location?.coords.latitude}&radius=3&pageNo=${pageNo}&pageSize=${pageSize}`);
 			if(response.status == HttpStatusCode.Ok){
 				const posts: FeedPostDTO[] = response.data;
 				setPosts(posts);

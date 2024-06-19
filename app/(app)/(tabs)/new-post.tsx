@@ -12,6 +12,7 @@ import { useLocation } from '@/contexts/locationContext';
 
 export default function NewPost() {
 	const [text, setText] = useState<string>();
+	const [radius, setRadius] = useState<string>();
 	const { location } = useLocation();
 	const [image, setImage] = useState(null);
 	const [postAnonymously, setPostAnonymously] = useState(false);
@@ -83,7 +84,7 @@ export default function NewPost() {
 			formData.append('text', text);
 			formData.append('longitude', location?.coords.longitude.toString());
 			formData.append('latitude', location?.coords.latitude.toString());
-			formData.append('radius', "3");
+			formData.append('radius', radius.toString());
 			//@ts-ignore
 			formData.append('postAnonymously', postAnonymously ? true : false);
 
@@ -92,7 +93,7 @@ export default function NewPost() {
 			if(response?.status === HttpStatusCode.Ok){
 				setImage(null);
 				setText("");
-				alert("Success");
+				setRadius("");
 			}else{
 				alert("Failed");
 			}
@@ -117,19 +118,28 @@ export default function NewPost() {
 				/>
 				{image && <Image source={{ uri: image.uri }} style={styles.image} />}
 			</View>
-			<View style={styles.buttonsView}>
-				<CheckBox
-					checked={false}
-					iconColor={'#000'}
-					iconSize={25}
-					textStyle={{fontSize: 20}}
-					onChange={() => setPostAnonymously(!postAnonymously)}
-					title={'Anonymous'}
+			<View style={styles.buttonParentView}>
+				<TextInput
+					editable
+					onChangeText={radius => setRadius(radius)}
+					value={radius}
+					placeholder="Radius"
+					style={styles.radiusField}
 				/>
-				{!image && <Button title="Gallery" onPress={pickImage} />}
-				{!image && <Button title="Camera" onPress={clickImage} />}
-				{image && <Button title="Clear" onPress={clearPickedImage} />}
-				<Button title="Post" onPress={post} />
+				<View style={styles.buttonsView}>
+					<CheckBox
+						checked={false}
+						iconColor={'#000'}
+						iconSize={25}
+						textStyle={{fontSize: 20}}
+						onChange={() => setPostAnonymously(!postAnonymously)}
+						title={'Anonymous'}
+					/>
+					{!image && <Button title="Gallery" onPress={pickImage} />}
+					{!image && <Button title="Camera" onPress={clickImage} />}
+					{image && <Button title="Clear" onPress={clearPickedImage} />}
+					<Button title="Post" onPress={post} />
+				</View>
 			</View>
 		</View>
 	)
@@ -140,6 +150,15 @@ const styles = StyleSheet.create({
 		padding: 5,
 		borderWidth: 1,
 		margin: 5,
+		borderRadius: 5
+	},
+	buttonParentView: {
+		flexDirection: "column",
+	},
+	radiusField: {
+		padding: 5,
+		margin: 5,
+		borderWidth: 1,
 		borderRadius: 5
 	},
 	CheckBox: {
